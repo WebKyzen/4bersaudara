@@ -1,0 +1,141 @@
+/* Dynamic Theme Palette Rules */
+:root {
+    --color-primary: #059669; /* Emerald Green */
+    --color-primary-dark: #047857;
+    --color-primary-light: #ecfdf5;
+}
+
+.theme-emerald {
+    --color-primary: #059669;
+    --color-primary-dark: #047857;
+    --color-primary-light: #ecfdf5;
+}
+
+.theme-shopee {
+    --color-primary: #f97316;
+    --color-primary-dark: #ea580c;
+    --color-primary-light: #fff7ed;
+}
+
+.theme-red {
+    --color-primary: #dc2626;
+    --color-primary-dark: #b91c1c;
+    --color-primary-light: #fef2f2;
+}
+
+.theme-blue {
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-light: #eff6ff;
+}
+
+.theme-purple {
+    --color-primary: #9333ea;
+    --color-primary-dark: #7e22ce;
+    --color-primary-light: #faf5ff;
+}
+
+.theme-amber {
+    --color-primary: #d97706;
+    --color-primary-dark: #b45309;
+    --color-primary-light: #fffbeb;
+}
+
+.theme-dark {
+    --color-primary: #1e293b;
+    --color-primary-dark: #0f172a;
+    --color-primary-light: #f8fafc;
+}
+
+.theme-chocolate {
+    --color-primary: #78350f;
+    --color-primary-dark: #451a03;
+    --color-primary-light: #fffbe3;
+}
+
+.bg-theme {
+    background-color: var(--color-primary) !important;
+}
+
+.bg-theme-light {
+    background-color: var(--color-primary-light) !important;
+}
+
+.text-theme {
+    color: var(--color-primary) !important;
+}
+
+.border-theme {
+    border-color: var(--color-primary) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Marquee Velocity Animation */
+@keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
+}
+
+.marquee-content {
+    display: flex;
+    width: 200%;
+    animation: marquee 16s linear infinite;
+}
+
+.marquee-content:hover {
+    animation-play-state: paused;
+}
+
+/* Map Container */
+#map {
+    height: 160px;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid #cbd5e1;
+    z-index: 1;
+}
+
+/* Modal Animation */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.25s ease-out forwards;
+}
+
+/* Radio button label active states */
+label.active-type {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light);
+}

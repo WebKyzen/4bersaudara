@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Snack Crispy - Toko & Katalog Online</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-['Plus_Jakarta_Sans'] pb-20 md:pb-10 theme-emerald">
+
+    <!-- HEADER / NAVBAR -->
+    <header class="sticky top-0 z-40 bg-theme text-white shadow-md transition-colors duration-300">
+        <div class="max-w-md md:max-w-4xl mx-auto px-3 py-2 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-full bg-white/20 p-0.5 overflow-hidden shadow border border-white/30 shrink-0">
+                    <img id="storeLogo" src="https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=100&auto=format&fit=crop&q=80" alt="Logo Toko" class="w-full h-full object-cover rounded-full">
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-sm md:text-base leading-tight">CemilanNusantara</h1>
+                    <p class="text-[10px] opacity-90 flex items-center gap-1">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-300 animate-pulse"></span> Buka • Siap Kirim
+                    </p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-1.5">
+                <!-- Color Palette Picker -->
+                <div class="relative group">
+                    <button class="bg-white/20 hover:bg-white/30 p-1.5 rounded-lg text-white text-xs font-semibold flex items-center gap-1 transition-all">
+                        <i class="fa-solid fa-palette text-amber-300"></i>
+                    </button>
+                    <div class="absolute right-0 top-full mt-1 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-100 p-2 hidden group-hover:block w-36 z-50 animate-fadeIn">
+                        <div class="text-[9px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Pilih Warna:</div>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <button onclick="setTheme('emerald')" class="w-6 h-6 rounded-full bg-emerald-600 border-2 border-white shadow hover:scale-110 transition-transform" title="Emerald Green"></button>
+                            <button onclick="setTheme('shopee')" class="w-6 h-6 rounded-full bg-orange-500 border-2 border-white shadow hover:scale-110 transition-transform" title="Shopee Orange"></button>
+                            <button onclick="setTheme('red')" class="w-6 h-6 rounded-full bg-red-600 border-2 border-white shadow hover:scale-110 transition-transform" title="Ruby Red"></button>
+                            <button onclick="setTheme('blue')" class="w-6 h-6 rounded-full bg-blue-600 border-2 border-white shadow hover:scale-110 transition-transform" title="Ocean Blue"></button>
+                            <button onclick="setTheme('purple')" class="w-6 h-6 rounded-full bg-purple-600 border-2 border-white shadow hover:scale-110 transition-transform" title="Royal Purple"></button>
+                            <button onclick="setTheme('amber')" class="w-6 h-6 rounded-full bg-amber-500 border-2 border-white shadow hover:scale-110 transition-transform" title="Warm Amber"></button>
+                            <button onclick="setTheme('dark')" class="w-6 h-6 rounded-full bg-slate-800 border-2 border-white shadow hover:scale-110 transition-transform" title="Midnight Dark"></button>
+                            <button onclick="setTheme('chocolate')" class="w-6 h-6 rounded-full bg-amber-900 border-2 border-white shadow hover:scale-110 transition-transform" title="Chocolate Brown"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartModal()" class="relative bg-black/20 hover:bg-black/30 p-1.5 px-2.5 rounded-xl text-white transition-all flex items-center gap-1.5 text-xs font-semibold">
+                    <i class="fa-solid fa-cart-shopping text-amber-300 text-sm"></i>
+                    <span id="cartBadge" class="bg-amber-400 text-slate-900 text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-md md:max-w-4xl mx-auto px-3 pt-3 space-y-4">
+
+        <!-- HERO BANNER PROMO CAROUSEL -->
+        <section class="relative overflow-hidden rounded-2xl shadow-sm border border-slate-200">
+            <div id="bannerCarousel" class="flex transition-transform duration-500 ease-out">
+                <div class="min-w-full bg-theme p-4 text-white flex items-center justify-between min-h-[110px] transition-colors duration-300">
+                    <div class="space-y-1 max-w-[65%]">
+                        <span class="bg-amber-400 text-slate-900 text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-sm">Super Renyah</span>
+                        <h2 class="text-sm font-extrabold leading-tight">Keripik Pisang & Singkong Premium</h2>
+                        <p class="text-[11px] opacity-90">Dibuat fresh dari bahan pilihan non-pengawet.</p>
+                    </div>
+                    <div class="text-4xl">🍌 Crisp</div>
+                </div>
+                <div class="min-w-full bg-slate-800 p-4 text-white flex items-center justify-between min-h-[110px]">
+                    <div class="space-y-1 max-w-[65%]">
+                        <span class="bg-amber-400 text-slate-900 text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase shadow-sm">Penting!</span>
+                        <h2 class="text-sm font-extrabold leading-tight">Bayar Pakai QRIS / DANA Direct</h2>
+                        <p class="text-[11px] opacity-90">Wajib transfer dulu sebelum pesanan dikirim.</p>
+                    </div>
+                    <div class="text-4xl">💳 QRIS</div>
+                </div>
+            </div>
+            <div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1 text-[8px]" id="bannerDots">
+                <span class="w-2 h-2 rounded-full bg-white opacity-100"></span>
+                <span class="w-2 h-2 rounded-full bg-white opacity-40"></span>
+            </div>
+        </section>
+
+        <!-- QUICK CARDS -->
+        <section class="-mt-1 z-10 relative">
+            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar text-[11px]">
+                <div class="min-w-[130px] flex-1 bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-theme-light text-theme flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-shield-check text-xs"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-800 leading-tight">Cek QRIS</div>
+                        <div class="text-[9px] text-slate-500">Bayar Dulu</div>
+                    </div>
+                </div>
+                <div class="min-w-[130px] flex-1 bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-truck-fast text-xs"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-800 leading-tight">Delivery/Pick-up</div>
+                        <div class="text-[9px] text-slate-500">Atur Lokasi</div>
+                    </div>
+                </div>
+                <div class="min-w-[130px] flex-1 bg-white p-2.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
+                    <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-receipt text-xs"></i>
+                    </div>
+                    <div>
+                        <div class="font-bold text-slate-800 leading-tight">Struk WA</div>
+                        <div class="text-[9px] text-slate-500">Nota Otomatis</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MARQUEE BANNER -->
+        <section class="bg-slate-900 text-amber-300 py-1.5 rounded-xl overflow-hidden shadow-inner text-[10px] font-semibold tracking-wide border border-slate-800">
+            <div class="marquee-content flex gap-8 whitespace-nowrap">
+                <span>⚡ PROMO SPESIAL: KERIPIK PISANG MANIS & GURIH</span>
+                <span>•</span>
+                <span>🛡️ CEK QRIS & DANA SANGAT MUDAH</span>
+                <span>•</span>
+                <span>📍 TITIK DELIVERY PRESISI GOOGLE MAPS</span>
+                <span>•</span>
+                <span>🌺 KEMBANG GORENG TERSEDIA DI KATALOG</span>
+            </div>
+        </section>
+
+        <!-- KATALOG PRODUK -->
+        <section class="space-y-2">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="font-extrabold text-sm md:text-base text-slate-900">Katalog Produk</h3>
+                    <p class="text-[11px] text-slate-500">Pilih cemilan favoritmu di bawah ini</p>
+                </div>
+                <span class="text-[10px] bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-bold">3 Produk</span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2.5" id="productGrid">
+                <!-- Javascript injects products -->
+            </div>
+        </section>
+
+        <!-- ULASAN & RATING -->
+        <section class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+            <div class="flex items-center justify-between border-b pb-2">
+                <div>
+                    <h3 class="font-extrabold text-xs md:text-sm text-slate-900 flex items-center gap-1.5">
+                        <i class="fa-solid fa-star text-amber-400"></i> Ulasan Pembeli
+                    </h3>
+                    <p class="text-[10px] text-slate-500">Sistem rating otomatis terhitung dari pembeli</p>
+                </div>
+                <div class="text-right">
+                    <div id="avgScoreDisplay" class="font-extrabold text-sm text-amber-500">0.0 / 5.0</div>
+                    <div id="totalReviewsCount" class="text-[9px] text-slate-400 font-semibold">(0 Ulasan)</div>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden min-h-[65px]" id="ratingContainer">
+                <div id="ratingSlider" class="flex transition-transform duration-500 ease-in-out">
+                    <!-- Dynamic review cards -->
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-2 pt-2">
+                <div class="font-bold text-[11px] text-slate-800 flex items-center justify-between">
+                    <span>Beri Ulasan & Rating Produk:</span>
+                    <div class="flex gap-1 text-amber-400 text-sm" id="starInputGroup">
+                        <i class="fa-solid fa-star cursor-pointer opacity-40 hover:opacity-100 transition-opacity" onclick="setRatingInput(1)"></i>
+                        <i class="fa-solid fa-star cursor-pointer opacity-40 hover:opacity-100 transition-opacity" onclick="setRatingInput(2)"></i>
+                        <i class="fa-solid fa-star cursor-pointer opacity-40 hover:opacity-100 transition-opacity" onclick="setRatingInput(3)"></i>
+                        <i class="fa-solid fa-star cursor-pointer opacity-40 hover:opacity-100 transition-opacity" onclick="setRatingInput(4)"></i>
+                        <i class="fa-solid fa-star cursor-pointer opacity-40 hover:opacity-100 transition-opacity" onclick="setRatingInput(5)"></i>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    <input type="text" id="reviewerName" placeholder="Nama Anda" class="border border-slate-300 rounded-lg p-1.5 text-[11px] outline-none focus:ring-1 focus:ring-slate-400">
+                    <input type="text" id="reviewerComment" placeholder="Tulis kesan/ulasan cemilan..." class="border border-slate-300 rounded-lg p-1.5 text-[11px] outline-none focus:ring-1 focus:ring-slate-400">
+                </div>
+                <button onclick="submitReview()" class="w-full bg-theme text-white font-bold text-[11px] py-1.5 rounded-lg shadow transition-colors">
+                    <i class="fa-solid fa-paper-plane mr-1"></i> Kirim Ulasan
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FLOATING BAR -->
+    <div id="floatingBar" class="fixed bottom-0 inset-x-0 bg-white border-t border-slate-200 p-2.5 z-30 shadow-lg max-w-md md:max-w-4xl mx-auto flex items-center justify-between gap-3">
+        <div>
+            <div class="text-[10px] text-slate-500">Total Belanja:</div>
+            <div id="floatingTotal" class="font-extrabold text-sm text-theme">Rp 0</div>
+        </div>
+        <button onclick="toggleCartModal()" class="bg-theme text-white font-bold text-xs px-4 py-2 rounded-xl shadow flex items-center gap-2 transition-colors">
+            <i class="fa-solid fa-bag-shopping"></i> Lihat Keranjang
+        </button>
+    </div>
+
+    <!-- MODAL PILIH RASA / VARIAN -->
+    <div id="variantModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-xs rounded-2xl p-4 shadow-2xl space-y-3 animate-slide-up border border-slate-100">
+            <div class="flex items-center justify-between border-b pb-2">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-amber-500"></i>
+                    <h3 class="font-bold text-xs text-slate-800" id="variantModalTitle">Pilih Rasa Produk</h3>
+                </div>
+                <button onclick="closeVariantModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold px-1">&times;</button>
+            </div>
+            
+            <p class="text-[11px] text-slate-500">Silakan pilih varian rasa yang kamu inginkan:</p>
+            
+            <div id="variantOptionsContainer" class="space-y-2">
+                <!-- Dynamic Radios -->
+            </div>
+
+            <button onclick="confirmVariantAddToCart()" class="w-full bg-theme text-white font-extrabold text-xs py-2 rounded-xl shadow transition-colors flex items-center justify-center gap-1.5 mt-2">
+                <i class="fa-solid fa-cart-plus"></i> Tambahkan ke Keranjang
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL KERANJANG & CHECKOUT -->
+    <div id="cartModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
+        <div class="bg-white w-full max-w-md rounded-t-2xl sm:rounded-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-slide-up">
+            
+            <div class="bg-theme text-white p-3.5 flex items-center justify-between transition-colors">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-cart-flatbed text-amber-300"></i>
+                    <h3 class="font-bold text-xs md:text-sm">Keranjang & Checkout</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="text-white/80 hover:text-white text-lg font-bold px-2">&times;</button>
+            </div>
+
+            <div class="p-3.5 overflow-y-auto space-y-4 flex-1 text-xs">
+
+                <!-- 1. Items Pesanan -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-800 border-b pb-1 text-[11px] uppercase tracking-wider text-slate-500">1. Items Pesanan</h4>
+                    <div id="cartItemsList" class="space-y-2">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- 2. Metode Pemenuhan -->
+                <div class="space-y-2">
+                    <h4 class="font-bold text-slate-800 border-b pb-1 text-[11px] uppercase tracking-wider text-slate-500">2. Metode Pengambilan / Pengiriman</h4>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="border-2 rounded-xl p-2 cursor-pointer flex items-center gap-2 transition-all active-type" id="labelPickup">
+                            <input type="radio" name="orderType" value="pickup" checked onchange="toggleOrderType('pickup')" class="accent-emerald-600">
+                            <div>
+                                <div class="font-bold text-[11px] text-slate-800">Pick Up (Ambil)</div>
+                                <div class="text-[9px] text-slate-500">Ambil sendiri ke toko</div>
+                            </div>
+                        </label>
+                        <label class="border-2 rounded-xl p-2 cursor-pointer flex items-center gap-2 transition-all" id="labelDelivery">
+                            <input type="radio" name="orderType" value="delivery" onchange="toggleOrderType('delivery')" class="accent-emerald-600">
+                            <div>
+                                <div class="font-bold text-[11px] text-slate-800">Delivery (Kirim)</div>
+                                <div class="text-[9px] text-slate-500">Dikirim ke rumah</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Form Data Pembeli -->
+                <div class="space-y-2.5">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-1">Nama Pemesan *</label>
+                        <input type="text" id="custName" placeholder="Contoh: Budi Santoso" class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-600 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-700 mb-1">No. WhatsApp *</label>
+                        <input type="tel" id="custPhone" placeholder="Contoh: 08123456789" class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-600 outline-none">
+                    </div>
+
+                    <!-- Delivery Fields -->
+                    <div id="deliveryFields" class="space-y-2 hidden">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-1">Pilih Titik Lokasi Pengiriman (Peta) *</label>
+                            <div class="relative">
+                                <div id="map"></div>
+                                <button type="button" onclick="getCurrentLocation()" class="absolute top-2 right-2 z-[1000] bg-white text-slate-800 px-2 py-1 rounded-md text-[10px] font-bold shadow border flex items-center gap-1 hover:bg-slate-50">
+                                    <i class="fa-solid fa-location-crosshairs text-amber-500"></i> GPS Saya
+                                </button>
+                            </div>
+                            <input type="hidden" id="custLat">
+                            <input type="hidden" id="custLng">
+                            <div class="text-[9px] text-slate-500 mt-1" id="locationStatus">Klik pada peta atau geser pin ke rumah Anda.</div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-1">Alamat Lengkap & RT/RW *</label>
+                            <textarea id="custAddress" rows="2" placeholder="Jl. Merdeka No. 12, RT 02/RW 05, Kel. Sukamaju" class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-600 outline-none"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-700 mb-1">Patokan Lokasi *</label>
+                            <input type="text" id="custLandmark" placeholder="Contoh: Depan Masjid Nurul Huda, Pagar Hijau" class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:ring-1 focus:ring-emerald-600 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Pembayaran QRIS / DANA -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-2">
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle-exclamation text-amber-600 text-sm mt-0.5"></i>
+                        <div>
+                            <div class="font-extrabold text-[11px] text-amber-900">PENTING: WAJIB BAYAR LANGSUNG</div>
+                            <p class="text-[10px] text-amber-800 leading-snug">Pesanan hanya diproses & dikirim setelah konfirmasi pembayaran QRIS/DANA diterima.</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-2 rounded-lg border border-amber-200 text-center space-y-2">
+                        <div class="text-[10px] font-bold text-slate-700">Scan QRIS / DANA Di Bawah Ini:</div>
+                        <div class="w-32 h-32 bg-slate-200 mx-auto rounded-lg flex items-center justify-center relative overflow-hidden border">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=DANA-081234567890-CEMILANNUSANTARA" alt="QRIS DANA" class="w-full h-full object-cover">
+                        </div>
+                        <div class="text-[10px] space-y-0.5">
+                            <div class="font-bold text-slate-800">DANA: <span class="text-theme select-all font-mono">0812-3456-7890</span></div>
+                            <div class="text-[9px] text-slate-500">A/N: Cemilan Nusantara Store</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-3 bg-slate-50 border-t border-slate-200 space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold">
+                    <span>Total Pembayaran:</span>
+                    <span id="modalTotal" class="text-theme text-sm font-extrabold">Rp 0</span>
+                </div>
+                <button onclick="processCheckout()" class="w-full bg-theme text-white font-extrabold text-xs py-2.5 rounded-xl shadow transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Kirim Struk & Order via WhatsApp
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
